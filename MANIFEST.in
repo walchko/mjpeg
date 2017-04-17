@@ -1,0 +1,2 @@
+include package/templates/*
+include package/static/*
