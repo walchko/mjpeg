@@ -13,9 +13,6 @@ from opencvutils import __version__ as VERSION
 # threaded version
 # http://stackoverflow.com/questions/12650238/processing-simultaneous-asynchronous-requests-with-python-basehttpserver
 
-# not sure flask is any better:
-# https://blog.miguelgrinberg.com/post/video-streaming-with-flask
-
 
 def compress(orig, comp):
 	return float(orig) / float(comp)
@@ -31,20 +28,20 @@ class mjpgServer(BaseHTTPRequestHandler):
 	ip = None
 	hostname = None
 
-	def setUpCamera(self, cv=None, pi=None, win=(320, 240)):
-		"""
-		cv - camera number, usually 0
-		pi - set to True
-		"""
-		if pi:
-			self.cam = Camera('pi')
-			self.cam.init(win=win)
-		elif cv:
-			self.cam = Camera('cv')
-			self.cam.init(cameraNumber=cv, win=win)
-
-		else:
-			raise Exception('Error, you must specify "cv" or "pi" for camera type')
+	# def setUpCamera(self, cv=None, pi=None, win=(320, 240)):
+	# 	"""
+	# 	cv - camera number, usually 0
+	# 	pi - set to True
+	# 	"""
+	# 	if pi:
+	# 		self.cam = Camera('pi')
+	# 		self.cam.init(win=win)
+	# 	elif cv:
+	# 		self.cam = Camera('cv')
+	# 		self.cam.init(cameraNumber=cv, win=win)
+	#
+	# 	else:
+	# 		raise Exception('Error, you must specify "cv" or "pi" for camera type')
 
 	def getImage(self):
 		if self.cam:
@@ -52,10 +49,12 @@ class mjpgServer(BaseHTTPRequestHandler):
 			return self.cam.read()
 
 		else:
-			if not self.cam:
-				raise Exception('Error, you must setup camera first')
-			print('You should call setUpCamera() first ... let us try now and assume "cv=0"')
-			self.setUpCamera(cv=0)
+			# if not self.cam:
+			# 	raise Exception('Error, you must setup camera first')
+			# print('You should call setUpCamera() first ... let us try now and assume "cv=0"')
+			# self.setUpCamera(cv=0)
+			self.cam = Camera('cv')
+			self.cam.init(cameraNumber=0, win=(640, 480))
 			return False, None
 
 	# def do_HEAD(s):
@@ -67,9 +66,9 @@ class mjpgServer(BaseHTTPRequestHandler):
 	def do_GET(self):
 		print('connection from:', self.address_string())
 
-		if self.ip is None or self.hostname is None:
-			self.hostname = Socket.gethostname()
-			self.ip = Socket.gethostbyname(Socket.gethostname())
+		# if self.ip is None or self.hostname is None:
+		# 	self.hostname = Socket.gethostname()
+		# 	self.ip = Socket.gethostbyname(Socket.gethostname())
 
 		if self.path == '/mjpg':
 			self.send_response(200)
@@ -97,25 +96,25 @@ class mjpgServer(BaseHTTPRequestHandler):
 				self.wfile.write(jpg.tostring())
 				time.sleep(0.05)
 
-		elif self.path == '/':
-			# hn = self.server.server_address[0]
-			port = self.server.server_address[1]
-			ip = self.ip
-			hostname = self.ip
-
-			self.send_response(200)
-			self.send_header('Content-type', 'text/html')
-			self.end_headers()
-			self.wfile.write('<html><head></head><body>')
-			self.wfile.write('<h1>{0!s}[{1!s}]:{2!s}</h1>'.format(hostname, ip, port))
-			self.wfile.write('<img src="http://{}:{}/mjpg"/>'.format(ip, port))
-			self.wfile.write('<p>{0!s}</p>'.format((self.version_string())))
-			self.wfile.write('<p>The mjpg stream can be accessed directly at:<ul>')
-			self.wfile.write('<li><a href="http://{0!s}:{1!s}/mjpg"/>http://{0!s}:{1!s}/mjpg</a></li>'.format(ip, port))
-			self.wfile.write('<li><a href="http://{0!s}:{1!s}/mjpg"/>http://{0!s}:{1!s}/mjpg</a></li>'.format(hostname, port))
-			self.wfile.write('</p></ul>')
-			self.wfile.write('<p>This only handles one connection at a time</p>')
-			self.wfile.write('</body></html>')
+		# elif self.path == '/':
+		# 	# hn = self.server.server_address[0]
+		# 	port = self.server.server_address[1]
+		# 	ip = self.ip
+		# 	hostname = self.ip
+		#
+		# 	self.send_response(200)
+		# 	self.send_header('Content-type', 'text/html')
+		# 	self.end_headers()
+		# 	self.wfile.write('<html><head></head><body>')
+		# 	self.wfile.write('<h1>{0!s}[{1!s}]:{2!s}</h1>'.format(hostname, ip, port))
+		# 	self.wfile.write('<img src="http://{}:{}/mjpg"/>'.format(ip, port))
+		# 	self.wfile.write('<p>{0!s}</p>'.format((self.version_string())))
+		# 	self.wfile.write('<p>The mjpg stream can be accessed directly at:<ul>')
+		# 	self.wfile.write('<li><a href="http://{0!s}:{1!s}/mjpg"/>http://{0!s}:{1!s}/mjpg</a></li>'.format(ip, port))
+		# 	self.wfile.write('<li><a href="http://{0!s}:{1!s}/mjpg"/>http://{0!s}:{1!s}/mjpg</a></li>'.format(hostname, port))
+		# 	self.wfile.write('</p></ul>')
+		# 	self.wfile.write('<p>This only handles one connection at a time</p>')
+		# 	self.wfile.write('</body></html>')
 
 		else:
 			print('error', self.path)
@@ -143,12 +142,12 @@ def main():
 	args = handleArgs()
 
 	try:
-		win = args['size']
-		if args['type'] is 'cv':
-			cv = args['camera']
-			mjpgServer.setUpCamera(cv=cv, win=win)
-		else:
-			mjpgServer.setUpCamera(pi=True, win=win)
+		# win = args['size']
+		# if args['type'] is 'cv':
+		# 	cv = args['camera']
+		# 	mjpgServer.setUpCamera(cv=cv, win=win)
+		# else:
+		# 	mjpgServer.setUpCamera(pi=True, win=win)
 		server = HTTPServer(('0.0.0.0', args['port']), mjpgServer)
 		print("server started on {}:{}".format(Socket.gethostname(), args['port']))
 		server.serve_forever()

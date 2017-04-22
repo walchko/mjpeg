@@ -2,6 +2,7 @@
 
 import cv2
 from flask import Flask, render_template, Response
+import argparse
 
 
 class VideoCamera(object):
@@ -35,6 +36,7 @@ def index():
 
 
 def gen(camera):
+	# i think this works better in py3 than py2
 	while True:
 		frame = camera.get_frame()
 		yield (
@@ -49,5 +51,19 @@ def video_feed():
 					mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+def handleArgs():
+	parser = argparse.ArgumentParser(description='A simple mjpeg server Example: mjpeg-server -p 8080 --camera 4')
+	parser.add_argument('-p', '--port', help='mjpeg publisher port, default is 9000', type=int, default=9000)
+	# parser.add_argument('-c', '--camera', help='set opencv camera number, ex. -c 1', type=int, default=0)
+	# parser.add_argument('-t', '--type', help='set camera type, either pi or cv, ex. -t pi', default='cv')
+	parser.add_argument('-i', '--ip', help='set host', default='0.0.0.0')
+	parser.add_argument('-s', '--size', help='set size', nargs=2, type=int, default=(320, 240))
+
+	args = vars(parser.parse_args())
+	args['size'] = (args['size'][0], args['size'][1])
+	return args
+
+
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', debug=False)
+	args = handleArgs()
+	app.run(host=args['ip'], port=args['port'], debug=False)
