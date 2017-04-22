@@ -15,7 +15,7 @@ pistreamer
 ..    :target: https://www.codacy.com/app/kevin-walchko/hostinfo?utm_source=github.com&utm_medium=referral&utm_content=walchko/hostinfo&utm_campaign=badger
 ..
 
-This is just a template that works for me.
+Stream motion jpeg (mjpeg) video from your computer using a camera and python 2/3.
 
 Install
 --------
