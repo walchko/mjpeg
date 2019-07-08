@@ -1,0 +1,182 @@
+<html>
+	<head>
+		<title>Video Streaming Demonstration</title>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- <script type = "text/javascript" src = "{{ url_for('static', filename = 'info.js') }}" ></script> -->
+	</head>
+	<body>
+		<!-- <h1>chart</h1> -->
+
+		<div class="pure-g">
+		    <!-- <div class="pure-u-1-1">
+				<canvas id="power"></canvas>
+				<p>Power</p>
+			</div> -->
+
+		    <div class="pure-u-1-4">
+				<canvas id="legs1"></canvas>
+				<p>Legs</p>
+			</div>
+		    <div class="pure-u-1-4">
+				<canvas id="legs2"></canvas>
+				<p>Legs</p>
+			</div>
+		    <div class="pure-u-1-4">
+				<canvas id="legs3"></canvas>
+				<p>Legs</p>
+			</div>
+		    <div class="pure-u-1-4">
+				<canvas id="legs4"></canvas>
+				<p>Legs</p>
+			</div>
+		    <!-- <div class="pure-u-1-4">
+				<canvas id="rightchart"></canvas>
+			</div>
+		    <div class="pure-u-1-2">
+				<canvas id="three"></canvas>
+			</div>
+		    <div class="pure-u-1-4">
+				<canvas id="far"></canvas>
+			</div> -->
+		</div>
+
+		<!-- <canvas id="myChart"></canvas> -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+		<script type = "text/javascript" src = "{{ url_for('static', filename = 'info.js') }}" ></script>
+
+		<!-- <script>
+			var ctx = document.getElementById("power").getContext('2d');
+			var c = kGuage(ctx, [50, 150]);
+		</script> -->
+
+
+		<script>
+			var ctx = document.getElementById("legs1").getContext('2d');
+			var angles = [
+				[1,2,3],
+				[4,5,6],
+				[7,8,9]
+			];
+			console.log(angles);
+			var c = new Legs(ctx, angles);
+		</script>
+
+		<script>
+			var ctx = document.getElementById("legs2").getContext('2d');
+			var angles = [
+				[1,2,3],
+				[4,5,6],
+				[7,8,9]
+			];
+			console.log(angles);
+			var c = new Legs(ctx, angles);
+		</script>
+
+		<script>
+			var ctx = document.getElementById("legs3").getContext('2d');
+			var angles = [
+				[1,2,3],
+				[4,5,6],
+				[7,8,9]
+			];
+			console.log(angles);
+			var c = new Legs(ctx, angles);
+		</script>
+
+		<script>
+			var ctx = document.getElementById("legs4").getContext('2d');
+			var angles = [
+				[1,2,3],
+				[4,5,6],
+				[7,8,9]
+			];
+			console.log(angles);
+			var c = new Legs(ctx, angles);
+		</script>
+
+		<!-- <script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+  // type: 'doughnut',
+  // type: 'radar',
+  type: 'polarArea',
+  options: {
+         legend: {
+            display: false
+         },
+        //  tooltips: {
+        //     enabled: false
+        //  }
+		title: {
+    display: true,
+    text: 'Something Cool'
+}},
+  data: {
+  	labels: ["M", "T", "W", "R", "F", "S", "S"],
+  	datasets: [{
+  		backgroundColor: [
+  			"#2ecc71",
+  			"#3498db",
+  			"#95a5a6",
+  			"#9b59b6",
+  			"#f1c40f",
+  			"#e74c3c",
+  			"#34495e"
+  		],
+  // 		data: [12, 19, 3, 17, 28, 24, 7]
+  		data: {{ num }}
+  	}]
+  }
+});
+		</script> -->
+
+
+		<!-- <script>
+var ctx = document.getElementById("rightchart").getContext('2d');
+var myChart = new Chart(ctx, {
+  // type: 'doughnut',
+  // type: 'radar',
+  type: 'line',
+  options: {
+         legend: {
+            display: false
+         },
+        //  tooltips: {
+        //     enabled: false
+        //  }
+		title: {
+    display: true,
+    text: 'Something Cool'
+}},
+  data: {
+ //  	labels: ["M", "T", "W", "R", "F", "S", "S"],
+	labels: ["M", "T", "W", "R", "F", "S", "S"],
+  	datasets: [{
+  		backgroundColor: "rgba(75,192,192,0.4)",
+		lineTension: 0.1,
+		pointRadius: 1,
+  		data: [12, 9, -3, 7, 28, -3, -6]
+  // data: [{
+  //               x: 0,
+  //               y: -10
+  //           }, {
+  //               x: 2,
+  //               y: -5
+  //           }, {
+  //               x: 5,
+  //               y: 5
+  //           }, {
+  //               x: 7.5,
+  //               y: -0.5
+  //           }]
+  // 		data: {{ num }}
+  	}]
+  }
+});
+		</script> -->
+
+
+	</body>
+</html>
